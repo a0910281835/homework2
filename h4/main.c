@@ -1,10 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "struct.h"
 #define MAX 120
 
 int main(void)
 {
+
+tree file;
+
+initaltree(&file);
+if(file.head->NEXT==file.tail)
+    printf("ya\n");
+
+pushQ(&file, "js");
+
+
+
+printf("%s\n",file.tail->PREV->I_NAME);
+
+if(file.head->NEXT!=file.tail)
+    printf("ya\n");
+pushnodeinleft(&file, "yes" ,true);
+
+printf("%s:%d:%d\n",file.tail->PREV->leftend->prev->NAME,file.tail->PREV->leftend->prev->type, file.tail->PREV->leftend->prev->value);
+
+
+pushnodeinleft(&file, "hello" ,true);
+
+printf("%s:%d:%d\n",file.tail->PREV->leftend->prev->NAME,file.tail->PREV->leftend->prev->type, file.tail->PREV->leftend->prev->value);
+
+pushnodeinright(&file, "no", false, 20);
+
+printf("%s:%d:%d\n",file.tail->PREV->rightend->prev->NAME,file.tail->PREV->rightend->prev->type, file.tail->PREV->rightend->prev->value);
+
+pushnodeinright(&file, "fuck", false, 24);
+
+printf("%s:%d:%d\n",file.tail->PREV->rightend->prev->NAME,file.tail->PREV->rightend->prev->type, file.tail->PREV->rightend->prev->value);
+printitemnode(file.tail->PREV);
+
+
+PRINTFILE(&file);
+
+/*
     FILE *fptr;
 
     FILE *fptr1;
@@ -16,11 +54,11 @@ int main(void)
 
     int count = 0 ,i = 0, deter = 0;
 
-    int first = 0 ,second = 0;
+    int first = 0 ,second = 0 , endmed = 0;
 
-    /* fptr = fopen("teplate.h", "r"); */
+    fptr = fopen("teplate.h", "r");
 
-    fptr = fopen("template.h", "r");
+  //  fptr = fopen("template.h", "r");
 
     fptr1 =fopen("out.txt", "w");
 
@@ -30,26 +68,6 @@ int main(void)
 
         while(fgets(str, MAX, fptr) != NULL)
         {
-/*            // here show the  all word in this file
-            printf("%s",str);
-
-            // here is analysis how to chosen
-
-            //br careful put str1 ='';
-            strcpy(str1, "");
-
-            if(str[0] =='/' && str[1] =='/' && str[2] == '#')
-            {
-                printf("%s",str+10);
-
-                // trans number into string
-
-                strcat(str1,str+10);
-
-                fwrite(str1, sizeof(char), strlen(str1), fptr1);
-
-            }
-*/
             i = 0;
 
             count = 0;
@@ -59,6 +77,8 @@ int main(void)
             first = 0;
 
             second = 0;
+
+            endmed = 0;
 
             while(str[i] != '\0')
             {
@@ -76,6 +96,10 @@ int main(void)
 
                         count++;
 
+                        if(count == 2)
+                        {
+                            endmed = i;
+                        }
                         i++;
                     }
                 }
@@ -92,6 +116,7 @@ int main(void)
                     {
                         deter = 0;
 
+                        //record where start.
                         if(count == 1)
                         {
                             first = i;
@@ -112,8 +137,12 @@ int main(void)
             strcpy(str1, "");
 
 
-            if((count == 1)&&(str[2]!=' '))
+            if((count == 2))
             {
+                str[endmed]='\n';
+
+                str[endmed+1]='\0';
+
                 printf("%s", str+first);
 
                 strcat(str1, str+first);
@@ -133,6 +162,6 @@ int main(void)
     {
         printf("error\n");
     }
-
+*/
     return 0;
 }

@@ -16,7 +16,7 @@ int main(void)
 
     int count = 0 ,i = 0, deter = 0;
 
-    int first = 0 ,second = 0;
+    int first = 0 ,second = 0 , endmed = 0;
 
     /* fptr = fopen("teplate.h", "r"); */
 
@@ -60,6 +60,8 @@ int main(void)
 
             second = 0;
 
+            endmed = 0;
+
             while(str[i] != '\0')
             {
                 //previous step and  word region
@@ -76,6 +78,10 @@ int main(void)
 
                         count++;
 
+                        if(count == 2)
+                        {
+                            endmed = i;
+                        }
                         i++;
                     }
                 }
@@ -92,6 +98,7 @@ int main(void)
                     {
                         deter = 0;
 
+                        //record where start.
                         if(count == 1)
                         {
                             first = i;
@@ -111,11 +118,16 @@ int main(void)
             //printf("%d,%d,%d:%s", count, first, second, str);
             strcpy(str1, "");
 
-            strcat(str1, str+first);
 
-            if((count == 1)&&(str[2]!=' '))
+            if((count == 2))
             {
+                str[endmed]='\n';
+
+                str[endmed+1]='\0';
+
                 printf("%s", str+first);
+
+                strcat(str1, str+first);
 
                 fwrite(str1 ,sizeof(char), strlen(str1), fptr1);
             }
