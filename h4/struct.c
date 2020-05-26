@@ -132,7 +132,7 @@ void pushnodeinright(tree *file, char str[MAX], bool type, unsigned int value)
 // only print one itemnode with his all subnode
 void printitemnode(itemnode *tempitem)
 {
-    printf("%s\n", tempitem->I_NAME);
+    printf("%s", tempitem->I_NAME);
     printf("Swithch:\n");
 
     subnode *tempsub = tempitem->leftstart->next;
@@ -153,7 +153,15 @@ void printitemnode(itemnode *tempitem)
 
    while(tempsub != tempitem->rightend)
    {
-      printf("->[%d]%s %d\n",count++, tempsub->NAME, tempsub->value);
+       if(tempsub->type == true)
+       {
+            printf("=>[%d]%s 0x%x\n",count++, tempsub->NAME, tempsub->value);
+       }
+
+       else
+       {
+            printf("=>[%d]%s %d\n",count++, tempsub->NAME, tempsub->value);
+        }
 
       tempsub = tempsub->next;
    }

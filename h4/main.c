@@ -7,8 +7,7 @@
 int main(void)
 {
 
-tree file;
-
+/*
 initaltree(&file);
 if(file.head->NEXT==file.tail)
     printf("ya\n");
@@ -41,8 +40,13 @@ printitemnode(file.tail->PREV);
 
 
 PRINTFILE(&file);
+*/
 
-/*
+
+    tree file;
+
+    initaltree(&file);
+
     FILE *fptr;
 
     FILE *fptr1;
@@ -56,6 +60,9 @@ PRINTFILE(&file);
 
     int first = 0 ,second = 0 , endmed = 0;
 
+    bool type;
+
+    unsigned int value = 0;
     fptr = fopen("teplate.h", "r");
 
   //  fptr = fopen("template.h", "r");
@@ -133,24 +140,74 @@ PRINTFILE(&file);
 
             }
 
-            //printf("%d,%d,%d:%s", count, first, second, str);
-            strcpy(str1, "");
+           // printf("%d,%d,%d:%s", count, first, second, str);
 
+            // item
+            if((count==1)&&(str[2] ==' '))
+            {
+            //    printf("%s",str+3);
+                pushQ(&file, str+3);
+            }
+
+            //open and close
+            if((count == 1)&&(str[2]!=' '))
+            {
+
+          //      printf("%s", str+first);
+
+                //avoid the '\n'
+                str[strlen(str)-1]='\0';
+                //open is true
+                if(str[0] == '#')
+                {
+                    type = true;
+                }
+
+                else
+                {
+                    type =false;
+                }
+
+                pushnodeinleft(&file, str+first, type);
+
+            }
 
             if((count == 2))
             {
-                str[endmed]='\n';
+//                str[endmed]='\n';
 
-                str[endmed+1]='\0';
+//                str[endmed+1]='\0';
 
-                printf("%s", str+first);
 
-                strcat(str1, str+first);
+                //determine it's Hexadecimal or decimal.then  using strol get the number
 
-                fwrite(str1 ,sizeof(char), strlen(str1), fptr1);
+               if(str[second] == '0' &&str[second+1] == 'x')
+               {
+                   type = true;
+
+                   value = strtol(str+second, NULL, 16);
+               }
+
+               else
+               {
+                    type = false;
+
+                    value = strtol(str+second, NULL, 10);
+               }
+
+               str[endmed] = '\0';
+
+               pushnodeinright(&file, str+first, type, value);
+
+               //printf("%s %d\n", str+first, value);
+
             }
+
         }
 
+        //printf(">>>>>>>\n");
+
+        PRINTFILE(&file);
 
 
         fclose(fptr);
@@ -162,6 +219,6 @@ PRINTFILE(&file);
     {
         printf("error\n");
     }
-*/
+
     return 0;
 }
