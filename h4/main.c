@@ -8,7 +8,11 @@ int main(void)
 {
 
 /*
+
+tree file;
+
 initaltree(&file);
+
 if(file.head->NEXT==file.tail)
     printf("ya\n");
 
@@ -40,8 +44,15 @@ printitemnode(file.tail->PREV);
 
 
 PRINTFILE(&file);
-*/
 
+//freenode(file.tail->PREV);
+FREE(&file);
+
+if(file.tail ==NULL)
+{
+    printf("succssful for left free");
+}
+*/
 
     tree file;
 
@@ -209,6 +220,7 @@ PRINTFILE(&file);
 
         PRINTFILE(&file);
 
+        FREE(&file);
 
         fclose(fptr);
 

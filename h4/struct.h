@@ -10,8 +10,8 @@ typedef struct subnode{
     char NAME[MAX];
 
     unsigned int value;
-    
-    //record ox or de
+
+    //record ox or decemail
     bool type;
 
     struct subnode * next;
@@ -23,12 +23,12 @@ typedef struct subnode{
 typedef struct itemnode{
 
     char I_NAME[MAX];
-    
+
     subnode * leftstart;
 
     subnode * leftend;
 
-    subnode * rightstart;    
+    subnode * rightstart;
 
     subnode * rightend;
 
@@ -67,4 +67,8 @@ void pushnodeinright(tree *file,char str[MAX], bool type, unsigned int value);
 void printitemnode(itemnode *tempitem);
 
 void PRINTFILE(tree *file);
+
+void freenode(itemnode *tempitem);
+
+void FREE(tree * file);
 #endif

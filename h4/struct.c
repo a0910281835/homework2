@@ -183,3 +183,110 @@ void PRINTFILE(tree *file)
         tempitem = tempitem->NEXT;
     }
 }
+
+
+void freenode(itemnode *tempitem)
+{
+    subnode * tempsub = tempitem->leftstart->next;
+
+    // free all lefsubnode except leftstart and leftend
+    while(tempsub != tempitem->leftend)
+    {
+        tempitem->leftstart->next = tempsub->next;//(1) and (2)
+
+        tempsub->next->prev = tempitem->leftstart;//(3) and (4)
+
+        tempsub->next = NULL;
+
+        tempsub->prev = NULL;
+
+        free(tempsub);
+    
+        tempsub =tempitem->leftstart->next;
+    }
+
+    // leftstart and leftend
+    tempitem->leftend->prev = NULL;
+
+    tempitem->leftstart->next = NULL;
+
+    free(tempitem->leftend);
+
+    free(tempitem->leftstart);
+
+    tempitem->leftstart = NULL;
+    
+    tempitem->leftend = NULL;
+//>>>>>>>>>>>>>>>>>>>>>>>>>>spilt >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
+
+    tempsub = tempitem->rightstart->next;
+
+    // free all rightsubnode except rightstart and rightend
+    while(tempsub != tempitem->rightend)
+    {
+        tempitem->rightstart->next = tempsub->next;//(1) and (2)
+
+        tempsub->next->prev = tempitem->rightstart;//(3) and (4)
+
+        tempsub->next = NULL;
+
+        tempsub->prev = NULL;
+
+        free(tempsub);
+    
+        tempsub =tempitem->rightstart->next;
+    }
+
+    // rightstart and rightend
+    tempitem->rightend->prev = NULL;
+
+    tempitem->rightstart->next = NULL;
+
+    free(tempitem->rightend);
+
+    free(tempitem->rightstart);
+
+    tempitem->rightstart = NULL;
+    
+    tempitem->rightend = NULL;
+
+    tempsub = NULL;
+}
+
+
+void FREE(tree * file)
+{
+    itemnode *tempitem = file->head->NEXT;
+
+    while(tempitem != file->tail)
+    {
+        file->head->NEXT = tempitem->NEXT;
+
+        tempitem->NEXT->PREV = file->head;
+
+        tempitem->NEXT = NULL;
+
+        tempitem->PREV = NULL;
+
+        //release tempitem all subnode
+        freenode(tempitem);
+
+        free(tempitem);
+
+        tempitem = file->head->NEXT;
+    }
+
+    tempitem = NULL;
+
+    file->head->NEXT = NULL;
+
+    file->tail->PREV = NULL;
+
+    free(file->head);
+
+    free(file->tail);
+
+    file->head = NULL;
+
+    file->tail = NULL;
+}
