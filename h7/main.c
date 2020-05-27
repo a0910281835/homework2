@@ -4,7 +4,7 @@
 #include "struct.h"
 #define MAX 120
 
-int main(void)
+int main(int argc, const char *argv[])
 {
 
 /*
@@ -156,7 +156,10 @@ if(file.tail ==NULL)
             // item and str='/' avoid the array in last
             if((count==1)&&(str[2] ==' ')&&str[0] == '/')
             {
-            //    printf("%s",str+3);
+                i = strlen(str);
+               // printf("%d:%s", i, str+3);
+                str[i-1] = '\0';
+
                 pushQ(&file, str+3);
             }
 
@@ -218,12 +221,96 @@ if(file.tail ==NULL)
 
        // printf(">>>>>>>\n");
 
-        PRINTFILE(&file);
-
+    //    PRINTFILE(&file);
 
         fclose(fptr);
 
         fclose(fptr1);
+
+        itemnode* tempitem = file.head->NEXT;
+
+        //function shell
+        if(strcmp(argv[1],"-i") == 0)
+        {
+
+                //find item and keyword is number.
+                if(48 <= argv[2][0] && argv[2][0] <= 57)
+                {
+                    //determine all is number
+                    for(i=1; i<strlen(argv[2]); i++)
+                    {
+                         if(48>argv[2][i]||argv[2][i]>57)
+                         {
+                             printf("your input is false, and it's not number");
+
+                             return 0;
+                         }
+
+                    }
+
+                    i = atoi(argv[2]);
+
+                    if(i<0 || i >= file.itemnumber)
+                    {
+                        printf("the index is overflow!\n");
+
+                        return 0;
+                    }
+
+                    for(count=0 ;count < i; count++)
+                    {
+                        tempitem = tempitem->NEXT;
+
+                //        printf("ya");
+                    }
+
+                 }
+                //find the item with its string
+                //but here use the fool method
+
+                else
+                {
+                    while(tempitem != file.tail)
+                    {
+                        // string compare with strcmp because string the first is address
+                        if(strcmp(argv[2], tempitem->I_NAME) == 0)
+                        {
+                            break;
+                        }
+
+                        tempitem = tempitem->NEXT;
+                    }
+
+                    if(tempitem == file.tail)
+                    {
+                        printf("the string can't be founded in item-list!\n");
+
+                        return 0;
+                    }
+
+                }
+
+                if(argv[3] == NULL)
+                {
+                     printitemnode(tempitem);
+                }
+
+                else if(strcmp(argv[3],"-s") == 0)
+                {
+                    printitemnodeleft(tempitem);
+                }
+
+                else if(strcmp(argv[3],"-p") == 0)
+                {
+                    printitemnoderight(tempitem);
+                }
+
+
+
+
+
+
+        }
 
         FREE(&file);
 
