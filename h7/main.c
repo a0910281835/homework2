@@ -67,7 +67,9 @@ if(file.tail ==NULL)
     //using '\0' .then you don't worry about the cover probelm;
     char str[MAX], str1[MAX];
 
-    int count = 0 ,i = 0, deter = 0;
+    int count = 0 , deter = 0;
+
+    unsigned int i = 0;
 
     int first = 0 ,second = 0 , endmed = 0;
 
@@ -227,13 +229,65 @@ if(file.tail ==NULL)
 
         fclose(fptr1);
 
-        itemnode* tempitem = file.head->NEXT;
+        itemnode* tempitem;
 
+        subnode* tempsub;
         //function shell
-        if(strcmp(argv[1],"-i") == 0)
+
+      //  if(strcmp(argv[1],"-i") == 0)
+
+    // check the argv[2] is word or number
+    bool first_check = analysis_word_num(argv[2]);
+
+
+    
+    tempitem =  finditem(&file, argv[2], first_check);
+
+
+    if(strcmp(argv[1], "-i") == 0)
+    {
+        if(argv[3] == NULL)
         {
+            printitemnode(tempitem);
+        }
+
+        else if(strcmp(argv[3], "-s") == 0)
+        {
+            printitemnodeleft(tempitem);
+        }
+
+        else if(strcmp(argv[3], "-p") == 0)
+        {
+            printitemnoderight(tempitem);
+        }
+    }
+
+    else if(strcmp(argv[1], "-set") == 0)
+    {
+        bool second_check =analysis_word_num(argv[4]);
+
+        bool direction;
+
+        if(strcmp(argv[3], "-s") == 0)
+        {
+            direction = true;
+        }
+
+        else if(strcmp(argv[3], "-p") == 0)
+        {
+            direction = false;
+        }
+        
+        tempsub = findsub(tempitem, argv[4], direction, second_check);  
+   
+        printf("%s\n",tempsub->NAME);
+    }
+
+
+  
 
                 //find item and keyword is number.
+/*
                 if(48 <= argv[2][0] && argv[2][0] <= 57)
                 {
                     //determine all is number
@@ -289,28 +343,55 @@ if(file.tail ==NULL)
                     }
 
                 }
+  */              
 
-                if(argv[3] == NULL)
+/*
+
+                if(strcmp(argv[1], "-i") == 0)
                 {
-                     printitemnode(tempitem);
+                        if(argv[3] == NULL)
+                        {
+                             printitemnode(tempitem);
+                        }
+
+                        else if(strcmp(argv[3],"-s") == 0)
+                        {
+                            printitemnodeleft(tempitem);
+                        }
+
+                        else if(strcmp(argv[3],"-p") == 0)
+                        {
+                            printitemnoderight(tempitem);
+                        }
+
                 }
 
-                else if(strcmp(argv[3],"-s") == 0)
+                else if(strcmp(argv[1], "-set") == 0)
                 {
-                    printitemnodeleft(tempitem);
+                        if(argv[3] == NULL)
+                        {
+                             printitemnode(tempitem);
+                        }
+
+                        else if(strcmp(argv[3],"-s") == 0)
+                        {
+                            printitemnodeleft(tempitem);
+                        }
+
+                        else if(strcmp(argv[3],"-p") == 0)
+                        {
+                            printitemnoderight(tempitem);
+                        }
+
                 }
-
-                else if(strcmp(argv[3],"-p") == 0)
-                {
-                    printitemnoderight(tempitem);
-                }
+*/
 
 
 
 
 
 
-        }
+       // }
 
         FREE(&file);
 
@@ -320,6 +401,7 @@ if(file.tail ==NULL)
     {
         printf("error\n");
     }
+
 
     return 0;
 }

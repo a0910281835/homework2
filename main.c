@@ -2,6 +2,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+
+void string(const char *str)
+{
+    printf("%c",str[1]);
+}
+
 int main(int argc, const char * argv[])
 {
 
@@ -29,6 +35,10 @@ int main(int argc, const char * argv[])
     {
         printf("no have argv[2]\n");
     }
+
+    string(argv[1]);
+
+
     return 0;
 }
 

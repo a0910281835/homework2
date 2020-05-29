@@ -83,4 +83,11 @@ void PRINTFILE(tree *file);
 void freenode(itemnode *tempitem);
 
 void FREE(tree * file);
+
+bool analysis_word_num(const char *str);
+
+itemnode* finditem(tree *file, const char *str , bool type);
+
+subnode* findsub(itemnode* tempitem, const char *str , bool direction,  bool type);
+
 #endif

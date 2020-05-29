@@ -166,7 +166,7 @@ void printitemnode(itemnode *tempitem)
    {
        if(tempsub->type == true)
        {
-            printf("=>[%d]%s 0x%x\n",count++, tempsub->NAME, tempsub->value);
+            printf("=>[%d]%s 0x%04x\n",count++, tempsub->NAME, tempsub->value);
        }
 
        else
@@ -189,12 +189,12 @@ void printitemnodeleft(itemnode *tempitem)
 
     int count = 0;
     // in future ,you can change the loop by leftnumber
-   while(tempsub !=tempitem->leftend)
-   {
-       printf("->[%d]%s %d\n",count++, tempsub->NAME, tempsub->value);
+    while(tempsub !=tempitem->leftend)
+    {
+        printf("->[%d]%s %d\n",count++, tempsub->NAME, tempsub->value);
 
-       tempsub = tempsub->next;
-   }
+        tempsub = tempsub->next;
+    }
 
 }
 
@@ -203,17 +203,19 @@ void printitemnodeleft(itemnode *tempitem)
 void printitemnoderight(itemnode *tempitem)
 {
 
-   int count = 0;
+    printf("[%d]%s:\n", tempitem->index, tempitem->I_NAME);
+    
+    int count = 0;
 
-   subnode *tempsub = tempitem->rightstart->next;
+    subnode *tempsub = tempitem->rightstart->next;
 
-   printf("<Para: num = %d>\n", tempitem->rightnumber);
+    printf("<Para: num = %d>\n", tempitem->rightnumber);
 
    while(tempsub != tempitem->rightend)
    {
        if(tempsub->type == true)
        {
-            printf("=>[%d]%s 0x%x\n",count++, tempsub->NAME, tempsub->value);
+            printf("=>[%d]%s 0x%04x\n",count++, tempsub->NAME, tempsub->value);
        }
 
        else
@@ -347,3 +349,204 @@ void FREE(tree * file)
 
     file->tail = NULL;
 }
+
+bool analysis_word_num(const char *str)
+{
+        int i;
+
+        if(48 <= str[0] && str[0] <= 57)
+        {
+            //determine all is number
+            for(i=1; i<strlen(str); i++)
+            {
+                 if(48>str[i] || str[i]>57)
+                 {
+                     printf("your input is false, and it's not number");
+                 }
+
+            }
+
+            return false;
+        }
+
+        else
+        {
+
+        return true;
+
+        }
+
+}
+
+
+itemnode* finditem(tree *file, const char *str , bool type)
+{
+    itemnode *tempitem = file->head->NEXT;
+
+    unsigned int index = 0, i = 0;
+
+    if(type == false)
+    {
+        index = atoi(str);
+
+        if(index<0 || index >= file->itemnumber)
+        {
+            printf("the index is over!\n");
+
+            return NULL;
+        }
+
+        for(i=0 ;i<index; i++)
+        {
+            tempitem = tempitem->NEXT;
+        }
+
+        return tempitem;
+    }
+
+
+    else
+    {
+        while(tempitem != file->tail)
+        {
+            // string compare with strcmp because string the first is address
+            if(strcmp(str, tempitem->I_NAME) == 0)
+            {
+                break;
+            }
+
+            tempitem = tempitem->NEXT;
+        }
+
+        if(tempitem == file->tail)
+        {
+            printf("the string can't be founded in item-list!\n");
+
+            return NULL;
+        }
+
+        return tempitem;
+    }
+}
+
+
+//type =yes => word,  type=false =>number
+subnode* findsub(itemnode* tempitem, const char *str , bool direction,  bool type)
+{
+    
+    unsigned int index = 0, i = 0;
+    //left
+    if(direction == true)
+    {
+        subnode* tempsub = tempitem->leftstart->next;
+
+        if(type == false)
+        {
+            index = atoi(str);
+
+            if(index<0 || index >= tempitem->leftnumber)
+            {
+                printf("the index is over!\n");
+
+                return NULL;
+            }
+
+            for(i=0 ;i<index; i++)
+            {
+                tempsub = tempsub->next;
+            }
+
+            return tempsub;
+        }
+
+
+        else
+        {
+            while(tempsub != tempitem->leftend)
+            {
+                // string compare with strcmp because string the first is address
+                if(strcmp(str, tempsub->NAME) == 0)
+                {
+                    break;
+                }
+
+                tempsub = tempsub->next;
+            }
+
+            if(tempsub == tempitem->leftend)
+            {
+                printf("the string can't be founded in subnode-list!\n");
+
+                return NULL;
+            }
+
+            return tempsub;
+        }
+    }
+
+    else
+    {
+        subnode* tempsub = tempitem->rightstart->next;
+
+        if(type == false)
+        {
+            index = atoi(str);
+
+            if(index<0 || index >= tempitem->rightnumber)
+            {
+                printf("the index is over!\n");
+
+                return NULL;
+            }
+
+            for(i=0 ;i<index; i++)
+            {
+                tempsub = tempsub->next;
+            }
+
+            return tempsub;
+        }
+
+
+        else
+        {
+            while(tempsub != tempitem->rightend)
+            {
+                // string compare with strcmp because string the first is address
+                if(strcmp(str, tempsub->NAME) == 0)
+                {
+                    break;
+                }
+
+                tempsub = tempsub->next;
+            }
+
+            if(tempsub == tempitem->rightend)
+            {
+                printf("the string can't be founded in subnode-list!\n");
+
+                return NULL;
+            }
+
+            return tempsub;
+        }
+    }
+}
+/*
+void modifyswithch(itemnode * tempitem, char * str)
+{
+    printf("[%d]%s:\n", tempitem->index, tempitem->I_NAME);
+    printf("<Swithch: num = %d>\n", tempitem->leftnumber);
+
+    subnode *tempsub = tempitem->leftstart->next;
+
+    int count = 0;
+    // in future ,you can change the loop by leftnumber
+   while(tempsub !=tempitem->leftend)
+   {
+       printf("->[%d]%s %d\n",count++, tempsub->NAME, tempsub->value);
+
+       tempsub = tempsub->next;
+   }
+
+}*/
