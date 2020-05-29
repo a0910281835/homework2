@@ -80,7 +80,7 @@ if(file.tail ==NULL)
 
     fptr = fopen("template.h", "r");
 
-    fptr1 =fopen("out.txt", "w");
+    fptr1 =fopen("config.h", "w");
 
     if(fptr != NULL)
     {
@@ -227,14 +227,12 @@ if(file.tail ==NULL)
 
         fclose(fptr);
 
-        fclose(fptr1);
 
         itemnode* tempitem;
 
         subnode* tempsub;
         //function shell
 
-      //  if(strcmp(argv[1],"-i") == 0)
 
     // check the argv[2] is word or number
     bool first_check = analysis_word_num(argv[2]);
@@ -244,6 +242,7 @@ if(file.tail ==NULL)
     tempitem =  finditem(&file, argv[2], first_check);
 
 
+    fwriteitem(tempitem, fptr1);
     if(strcmp(argv[1], "-i") == 0)
     {
         if(argv[3] == NULL)
@@ -260,14 +259,23 @@ if(file.tail ==NULL)
         {
             printitemnoderight(tempitem);
         }
+
+        else
+        {
+            printf("input is wrong\n");
+
+            exit(-1);
+        }
     }
 
     else if(strcmp(argv[1], "-set") == 0)
     {
+        // check the second_term 
         bool second_check =analysis_word_num(argv[4]);
 
         bool direction;
 
+        
         if(strcmp(argv[3], "-s") == 0)
         {
             direction = true;
@@ -277,123 +285,25 @@ if(file.tail ==NULL)
         {
             direction = false;
         }
+
+        else 
+        {
+            printf("you are wrongi\n");
+            exit(-1);
+        }
         
         tempsub = findsub(tempitem, argv[4], direction, second_check);  
    
-        printf("%s\n",tempsub->NAME);
+        modification(tempsub, direction , argv[5]);
+
+        printf("%d:%d:%s\n",tempsub->type, tempsub->value,tempsub->NAME);
     }
 
 
   
 
-                //find item and keyword is number.
-/*
-                if(48 <= argv[2][0] && argv[2][0] <= 57)
-                {
-                    //determine all is number
-                    for(i=1; i<strlen(argv[2]); i++)
-                    {
-                         if(48>argv[2][i]||argv[2][i]>57)
-                         {
-                             printf("your input is false, and it's not number");
-
-                             return 0;
-                         }
-
-                    }
-
-                    i = atoi(argv[2]);
-
-                    if(i<0 || i >= file.itemnumber)
-                    {
-                        printf("the index is overflow!\n");
-
-                        return 0;
-                    }
-
-                    for(count=0 ;count < i; count++)
-                    {
-                        tempitem = tempitem->NEXT;
-
-                //        printf("ya");
-                    }
-
-                 }
-                //find the item with its string
-                //but here use the fool method
-
-                else
-                {
-                    while(tempitem != file.tail)
-                    {
-                        // string compare with strcmp because string the first is address
-                        if(strcmp(argv[2], tempitem->I_NAME) == 0)
-                        {
-                            break;
-                        }
-
-                        tempitem = tempitem->NEXT;
-                    }
-
-                    if(tempitem == file.tail)
-                    {
-                        printf("the string can't be founded in item-list!\n");
-
-                        return 0;
-                    }
-
-                }
-  */              
-
-/*
-
-                if(strcmp(argv[1], "-i") == 0)
-                {
-                        if(argv[3] == NULL)
-                        {
-                             printitemnode(tempitem);
-                        }
-
-                        else if(strcmp(argv[3],"-s") == 0)
-                        {
-                            printitemnodeleft(tempitem);
-                        }
-
-                        else if(strcmp(argv[3],"-p") == 0)
-                        {
-                            printitemnoderight(tempitem);
-                        }
-
-                }
-
-                else if(strcmp(argv[1], "-set") == 0)
-                {
-                        if(argv[3] == NULL)
-                        {
-                             printitemnode(tempitem);
-                        }
-
-                        else if(strcmp(argv[3],"-s") == 0)
-                        {
-                            printitemnodeleft(tempitem);
-                        }
-
-                        else if(strcmp(argv[3],"-p") == 0)
-                        {
-                            printitemnoderight(tempitem);
-                        }
-
-                }
-*/
-
-
-
-
-
-
-       // }
-
         FREE(&file);
+        fclose(fptr1);
 
     }
 

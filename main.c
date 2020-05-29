@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 void string(const char *str)
 {
@@ -13,32 +14,26 @@ int main(int argc, const char * argv[])
 
     char ch[20] = "015";
 
-   unsigned short int k = strtol(ch, NULL,16);
+    char str[20];
 
-   int n = k;
-    printf("%d\n",n);
+    unsigned int value = atoi(ch);
 
-
-    printf("0x%x\n",n);
-
-    printf("%c\n",argv[1][2]);
-
-    printf("%lu\n",strlen(argv[1]));
+    bool type ;
 
 
-    if(strcmp(argv[1],"ILO") == 0)
-    {
-        printf("yes\n");
-    }
+    type = value;
 
-    if(argv[2] == NULL)
-    {
-        printf("no have argv[2]\n");
-    }
+    printf("%d\n",value);
 
-    string(argv[1]);
+    printf("%d\n",type);
 
 
+    sprintf(str,"%x",value);
+
+    /* printf("%s\n",str); */
+
+
+    printf("%d\n",value);
     return 0;
 }
 

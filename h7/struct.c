@@ -532,21 +532,130 @@ subnode* findsub(itemnode* tempitem, const char *str , bool direction,  bool typ
         }
     }
 }
-/*
-void modifyswithch(itemnode * tempitem, char * str)
-{
-    printf("[%d]%s:\n", tempitem->index, tempitem->I_NAME);
-    printf("<Swithch: num = %d>\n", tempitem->leftnumber);
 
+void modification(subnode * tempsub, bool direction , const char* strval)
+{
+    unsigned int val = atoi(strval);
+
+    //subnode is switch-left
+    if(direction == true)
+    {
+        bool type = val;
+
+        tempsub->type = type;
+    }
+
+    else
+    {
+        tempsub->value = val;
+
+    }
+}
+
+
+
+
+void fwriteitem(itemnode* tempitem, FILE *fptr)
+{
+    char str[MAX];
+
+    char str1[20];
+
+    strcpy(str, "//-----------------------------------\n");
+
+
+    fwrite(str, sizeof(char), strlen(str), fptr);
+
+    strcpy(str,  "// ");
+
+    strcat(str, tempitem->I_NAME);
+
+    strcat(str,"\n");
+
+    fwrite(str,sizeof(char), strlen(str), fptr);
+
+    strcpy(str, "//-----------------------------------\n");
+
+    fwrite(str, sizeof(char), strlen(str), fptr);
+
+    // following below is write left then write right.
     subnode *tempsub = tempitem->leftstart->next;
 
-    int count = 0;
-    // in future ,you can change the loop by leftnumber
-   while(tempsub !=tempitem->leftend)
-   {
-       printf("->[%d]%s %d\n",count++, tempsub->NAME, tempsub->value);
+    while(tempsub != tempitem->leftend)
+    {
+        //switch is open
+        if(tempsub->type == true)
+        {
+            strcpy(str,"#define ");
 
-       tempsub = tempsub->next;
-   }
+            strcat(str, tempsub->NAME);
 
-}*/
+            strcat(str, "\n");
+
+            fwrite(str, sizeof(char), strlen(str), fptr);
+
+
+        }
+
+        else
+        {
+            strcpy(str,"//#define ");
+
+            strcat(str ,tempsub->NAME);
+
+            strcat(str, "\n");
+
+            fwrite(str, sizeof(char), strlen(str), fptr);
+
+        }
+
+        tempsub = tempsub->next;
+    }
+
+
+    //parameter write
+    tempsub = tempitem->rightstart->next;
+
+    while(tempsub != tempitem->rightend)
+    {
+       if(tempsub->type == true)
+       {
+            strcpy(str,"#define ");
+
+            strcat(str, tempsub->NAME);
+
+            strcat(str, " 0x");
+
+            sprintf(str1,"%x",tempsub->value);
+
+            strcat(str, str1);
+
+            strcat(str, "\n");
+
+            fwrite(str, sizeof(char), strlen(str), fptr);
+
+       }
+       else
+       {
+            strcpy(str,"#define ");
+
+            strcat(str, tempsub->NAME);
+
+            strcat(str, " ");
+
+            sprintf(str1,"%d",tempsub->value);
+
+            strcat(str, str1);
+
+            strcat(str, "\n");
+
+            fwrite(str, sizeof(char), strlen(str), fptr);
+
+       }
+
+
+      tempsub = tempsub->next;
+
+    }
+}
+
