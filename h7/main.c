@@ -223,26 +223,30 @@ if(file.tail ==NULL)
 
        // printf(">>>>>>>\n");
 
-    //    PRINTFILE(&file);
+ //      PRINTFILE(&file);
 
         fclose(fptr);
 
 
-        itemnode* tempitem;
+        itemnode* tempitem = NULL;
 
-        subnode* tempsub;
+        subnode* tempsub = NULL;
+
+
+
+
+
         //function shell
 
 
     // check the argv[2] is word or number
+
     bool first_check = analysis_word_num(argv[2]);
 
-
-    
+                                        //true change first_check
     tempitem =  finditem(&file, argv[2], first_check);
 
 
-    fwriteitem(tempitem, fptr1);
     if(strcmp(argv[1], "-i") == 0)
     {
         if(argv[3] == NULL)
@@ -270,12 +274,12 @@ if(file.tail ==NULL)
 
     else if(strcmp(argv[1], "-set") == 0)
     {
-        // check the second_term 
+        // check the second_term
         bool second_check =analysis_word_num(argv[4]);
 
         bool direction;
 
-        
+
         if(strcmp(argv[3], "-s") == 0)
         {
             direction = true;
@@ -286,23 +290,23 @@ if(file.tail ==NULL)
             direction = false;
         }
 
-        else 
+        else
         {
             printf("you are wrongi\n");
             exit(-1);
         }
-        
-        tempsub = findsub(tempitem, argv[4], direction, second_check);  
-   
+
+        tempsub = findsub(tempitem, argv[4], direction, second_check);
+
         modification(tempsub, direction , argv[5]);
 
-        printf("%d:%d:%s\n",tempsub->type, tempsub->value,tempsub->NAME);
+        fwritefile(&file,fptr1);
     }
 
 
-  
 
         FREE(&file);
+
         fclose(fptr1);
 
     }

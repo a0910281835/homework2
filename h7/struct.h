@@ -11,7 +11,7 @@ typedef struct subnode{
 
     unsigned int value;
 
-    //record ox or decemail
+    //left open or close right 16 or 10 
     bool type;
 
     struct subnode * next;
@@ -106,4 +106,7 @@ void modification(subnode * tempsub, bool direction , const char* strval);
 
 // write the file >>>>>>>>>>>>>>>
 void fwriteitem(itemnode* tempitem, FILE *fptr);
+
+void fwritefile(tree *file, FILE *fptr);
+
 #endif

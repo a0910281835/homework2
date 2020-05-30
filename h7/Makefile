@@ -30,4 +30,4 @@ cleanall:
 	$(RMRF) $(OBJ) $(TAR) $(LOG)
 
 leak:
-	$(LEAK) --leak-check=full --log-file=$(LOG) ./$(TAR)
+	$(LEAK) --leak-check=full --track-origins=yes --log-file=$(LOG) ./$(TAR)

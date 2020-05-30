@@ -8,7 +8,9 @@
 
 void initaltree(tree * file)
 {
-    (file)->head = (itemnode*) malloc(sizeof(itemnode));
+    file->itemnumber = 0;
+
+    file->head = (itemnode*) malloc(sizeof(itemnode));
 
     file->tail = (itemnode*) malloc(sizeof(itemnode));
 
@@ -52,6 +54,18 @@ void pushQ(tree * file, char str[MAX])
 
 void initalitem(itemnode *tempitem)
 {
+    tempitem->index = 0;
+
+    tempitem->leftnumber = 0;
+
+    tempitem->rightnumber = 0;
+
+    strcpy(tempitem->I_NAME, "");
+
+    tempitem->NEXT = NULL;
+
+    tempitem->PREV = NULL;
+
     tempitem->leftstart = (subnode*) malloc(sizeof(subnode));
 
     tempitem->leftend = (subnode*) malloc(sizeof(subnode));
@@ -108,6 +122,7 @@ void pushnodeinleft(tree *file, char str[MAX], bool type)
 
     file->tail->PREV->leftnumber++;
 
+    tempsub = NULL;
 }
 
 void pushnodeinright(tree *file, char str[MAX], bool type, unsigned int value)
@@ -137,6 +152,8 @@ void pushnodeinright(tree *file, char str[MAX], bool type, unsigned int value)
     tempsub->next = last;
 
     file->tail->PREV->rightnumber++;
+
+    tempsub = NULL;
 }
 
 // only print one itemnode with his all subnode
@@ -176,6 +193,8 @@ void printitemnode(itemnode *tempitem)
 
       tempsub = tempsub->next;
    }
+
+   tempsub = NULL;
 }
 
 
@@ -183,6 +202,7 @@ void printitemnode(itemnode *tempitem)
 void printitemnodeleft(itemnode *tempitem)
 {
     printf("[%d]%s:\n", tempitem->index, tempitem->I_NAME);
+   
     printf("<Swithch: num = %d>\n", tempitem->leftnumber);
 
     subnode *tempsub = tempitem->leftstart->next;
@@ -196,6 +216,7 @@ void printitemnodeleft(itemnode *tempitem)
         tempsub = tempsub->next;
     }
 
+    tempsub = NULL;
 }
 
 
@@ -205,11 +226,12 @@ void printitemnoderight(itemnode *tempitem)
 
     printf("[%d]%s:\n", tempitem->index, tempitem->I_NAME);
     
+    printf("<Para: num = %d>\n", tempitem->rightnumber);
+
     int count = 0;
 
     subnode *tempsub = tempitem->rightstart->next;
 
-    printf("<Para: num = %d>\n", tempitem->rightnumber);
 
    while(tempsub != tempitem->rightend)
    {
@@ -225,6 +247,8 @@ void printitemnoderight(itemnode *tempitem)
 
       tempsub = tempsub->next;
    }
+
+   tempsub = NULL;
 }
 
 
@@ -241,6 +265,8 @@ void PRINTFILE(tree *file)
 
         tempitem = tempitem->NEXT;
     }
+
+    tempitem = NULL;
 }
 
 
@@ -393,7 +419,7 @@ itemnode* finditem(tree *file, const char *str , bool type)
         {
             printf("the index is over!\n");
 
-            return NULL;
+            exit(-1);
         }
 
         for(i=0 ;i<index; i++)
@@ -422,7 +448,7 @@ itemnode* finditem(tree *file, const char *str , bool type)
         {
             printf("the string can't be founded in item-list!\n");
 
-            return NULL;
+            exit(-1);
         }
 
         return tempitem;
@@ -477,7 +503,7 @@ subnode* findsub(itemnode* tempitem, const char *str , bool direction,  bool typ
             {
                 printf("the string can't be founded in subnode-list!\n");
 
-                return NULL;
+                exit(-1);
             }
 
             return tempsub;
@@ -496,7 +522,7 @@ subnode* findsub(itemnode* tempitem, const char *str , bool direction,  bool typ
             {
                 printf("the index is over!\n");
 
-                return NULL;
+                exit(-1);
             }
 
             for(i=0 ;i<index; i++)
@@ -525,7 +551,7 @@ subnode* findsub(itemnode* tempitem, const char *str , bool direction,  bool typ
             {
                 printf("the string can't be founded in subnode-list!\n");
 
-                return NULL;
+                exit(-1);
             }
 
             return tempsub;
@@ -657,5 +683,21 @@ void fwriteitem(itemnode* tempitem, FILE *fptr)
       tempsub = tempsub->next;
 
     }
+
+    tempsub = NULL;
 }
 
+
+void fwritefile(tree *file, FILE *fptr)
+{
+    itemnode *tempitem = file->head->NEXT;
+
+    while(tempitem != file->tail)
+    {
+        fwriteitem(tempitem, fptr);
+
+        tempitem = tempitem->NEXT;
+    }
+
+    tempitem = NULL;
+}
