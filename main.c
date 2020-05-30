@@ -4,7 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <sys/io.h>
-
+#include <unistd.h>
 void string(const char *str)
 {
     printf("%c",str[1]);
@@ -35,6 +35,10 @@ int main(int argc, const char * argv[])
 
 
     printf("%d\n",value);
+
+    int have = access("out.txt",0);
+
+    printf("haveor no %d\n",~have);
     return 0;
 }
 

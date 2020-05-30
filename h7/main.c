@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "struct.h"
+#include <unistd.h>
 #define MAX 120
 
 int main(int argc, const char *argv[])
@@ -78,9 +79,20 @@ if(file.tail ==NULL)
     unsigned int value = 0;
   //  fptr = fopen("teplate.h", "r");
 
-    fptr = fopen("template.h", "r");
+    int have = access("config.h",0);
 
-    fptr1 =fopen("config.h", "w");
+    if(strcmp(argv[1], "-set") == 0 && ~have)
+    {
+        fptr =fopen("config.h","r");
+    }
+
+    else
+   {
+        fptr = fopen("template.h", "r");
+   }
+
+
+
 
     if(fptr != NULL)
     {
@@ -296,18 +308,21 @@ if(file.tail ==NULL)
             exit(-1);
         }
 
+        fptr1 =fopen("config.h", "w");
+
         tempsub = findsub(tempitem, argv[4], direction, second_check);
 
         modification(tempsub, direction , argv[5]);
 
         fwritefile(&file,fptr1);
+
+        fclose(fptr1);
     }
 
 
 
         FREE(&file);
 
-        fclose(fptr1);
 
     }
 
