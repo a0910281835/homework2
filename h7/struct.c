@@ -3,6 +3,19 @@
 #include <string.h>
 #include "struct.h"
 
+
+void showfunction(void)
+{
+    printf(" -i [index/item_NAME] \t\t\t\t diaplay the content of item in this file\n");
+
+    printf(" -i [index/item_NAME] -s \t\t\t\t diaplay the switch of item in this file\n");
+
+    printf(" -i [index/item_NAME] -p \t\t\t\t diaplay the parameter  of item in this file\n");
+
+    printf(" -set [index/item] -s [switch name/index] [write status] \t\t\t\t modify the switch from  current status , where write status is 0 or 1 (0 is close and 1 is open), then output a new file whose name is config.h \t\t \n");
+
+}
+
 // initalizataion for queue type
 
 

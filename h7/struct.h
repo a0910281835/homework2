@@ -58,7 +58,7 @@ typedef struct tree{
 
 
 //>>>>>> function>>>>.
-
+void showfunction(void);
 
 void initaltree(tree * file);
 

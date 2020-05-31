@@ -77,19 +77,33 @@ if(file.tail ==NULL)
     bool type;
 
     unsigned int value = 0;
-  //  fptr = fopen("teplate.h", "r");
+
+    if(strcmp(argv[1], "--help") == 0)
+    {
+        showfunction();
+
+        exit(-1);
+    }
 
     int have = access("config.h",0);
 
-    if(strcmp(argv[1], "-set") == 0 && ~have)
+
+    if((strcmp(argv[1], "-set") == 0 || strcmp(argv[1], "-i") == 0)&& ~have)
     {
         fptr =fopen("config.h","r");
     }
 
-    else
+    else if(strcmp(argv[1], "-set") == 0 || strcmp(argv[1], "-i") == 0)
    {
         fptr = fopen("template.h", "r");
    }
+
+   else
+    {
+        printf("it's wrong\n");
+
+        exit(-1);
+    }
 
 
 
@@ -245,7 +259,14 @@ if(file.tail ==NULL)
         subnode* tempsub = NULL;
 
 
+    if(argv[2] == NULL)
+    {
+        printf("the parameter is not enough\n");
 
+        FREE(&file);
+
+        exit(-1);
+    }
 
 
         //function shell
@@ -280,6 +301,8 @@ if(file.tail ==NULL)
         {
             printf("input is wrong\n");
 
+            FREE(&file);
+
             exit(-1);
         }
     }
@@ -305,6 +328,9 @@ if(file.tail ==NULL)
         else
         {
             printf("you are wrongi\n");
+
+            FREE(&file);
+
             exit(-1);
         }
 
