@@ -6,13 +6,13 @@
 
 void showfunction(void)
 {
-    printf(" -i [index/item_NAME] \t\t\t\t diaplay the content of item in this file\n");
+    printf(" -i [index/item_NAME] \t\t\t\t\t diaplay the content of item in this file\n");
 
     printf(" -i [index/item_NAME] -s \t\t\t\t diaplay the switch of item in this file\n");
 
-    printf(" -i [index/item_NAME] -p \t\t\t\t diaplay the parameter  of item in this file\n");
+    printf(" -i [index/item_NAME] -p \t\t\t\t diaplay the parameter of item in this file\n");
 
-    printf(" -set [index/item] -s [switch name/index] [write status] \t\t\t\t modify the switch from  current status , where write status is 0 or 1 (0 is close and 1 is open), then output a new file whose name is config.h \t\t \n");
+    printf(" -set [index/item] -s [switch name/index] [write status] \n modify the switch from  current status , where write status is 0 or 1 (0 is close and 1 is open),\n then output a new file whose name is config.h \t\t \n");
 
 }
 
@@ -215,7 +215,7 @@ void printitemnode(itemnode *tempitem)
 void printitemnodeleft(itemnode *tempitem)
 {
     printf("[%d]%s:\n", tempitem->index, tempitem->I_NAME);
-   
+
     printf("<Swithch: num = %d>\n", tempitem->leftnumber);
 
     subnode *tempsub = tempitem->leftstart->next;
@@ -238,7 +238,7 @@ void printitemnoderight(itemnode *tempitem)
 {
 
     printf("[%d]%s:\n", tempitem->index, tempitem->I_NAME);
-    
+
     printf("<Para: num = %d>\n", tempitem->rightnumber);
 
     int count = 0;
@@ -299,7 +299,7 @@ void freenode(itemnode *tempitem)
         tempsub->prev = NULL;
 
         free(tempsub);
-    
+
         tempsub =tempitem->leftstart->next;
     }
 
@@ -313,7 +313,7 @@ void freenode(itemnode *tempitem)
     free(tempitem->leftstart);
 
     tempitem->leftstart = NULL;
-    
+
     tempitem->leftend = NULL;
 //>>>>>>>>>>>>>>>>>>>>>>>>>>spilt >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
 
@@ -331,7 +331,7 @@ void freenode(itemnode *tempitem)
         tempsub->prev = NULL;
 
         free(tempsub);
-    
+
         tempsub =tempitem->rightstart->next;
     }
 
@@ -345,7 +345,7 @@ void freenode(itemnode *tempitem)
     free(tempitem->rightstart);
 
     tempitem->rightstart = NULL;
-    
+
     tempitem->rightend = NULL;
 
     tempsub = NULL;
@@ -391,6 +391,12 @@ void FREE(tree * file)
 
 bool analysis_word_num(const char *str)
 {
+    if(str == NULL)
+    {
+        printf("NO word");
+
+        exit(-1);
+    }
         int i;
 
         if(48 <= str[0] && str[0] <= 57)
@@ -411,7 +417,7 @@ bool analysis_word_num(const char *str)
         else
         {
 
-        return true;
+            return true;
 
         }
 
@@ -472,7 +478,7 @@ itemnode* finditem(tree *file, const char *str , bool type)
 //type =yes => word,  type=false =>number
 subnode* findsub(itemnode* tempitem, const char *str , bool direction,  bool type)
 {
-    
+
     unsigned int index = 0, i = 0;
     //left
     if(direction == true)
@@ -487,7 +493,7 @@ subnode* findsub(itemnode* tempitem, const char *str , bool direction,  bool typ
             {
                 printf("the index is over!\n");
 
-                return NULL;
+                exit(-1);
             }
 
             for(i=0 ;i<index; i++)
@@ -574,11 +580,13 @@ subnode* findsub(itemnode* tempitem, const char *str , bool direction,  bool typ
 
 void modification(subnode * tempsub, bool direction , const char* strval)
 {
-    unsigned int val = atoi(strval);
+    unsigned int val = 0 ;
 
     //subnode is switch-left
     if(direction == true)
     {
+        val = atoi(strval);
+
         bool type = val;
 
         tempsub->type = type;
@@ -586,7 +594,19 @@ void modification(subnode * tempsub, bool direction , const char* strval)
 
     else
     {
-        tempsub->value = val;
+        if (strval[0] == '0' &&strval[1] == 'x')
+        {
+            tempsub->type = true;
+
+            tempsub->value = strtol(strval, NULL, 16);
+        }
+
+        else
+        {
+            tempsub->type = false;
+
+            tempsub->value = strtol(strval, NULL, 10);
+        }
 
     }
 }

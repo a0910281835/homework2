@@ -309,6 +309,13 @@ if(file.tail ==NULL)
 
     else if(strcmp(argv[1], "-set") == 0)
     {
+        if(argv[3] == NULL)
+        {
+            printf("wrong!");
+
+            exit(-1);
+        }
+
         // check the second_term
         bool second_check =analysis_word_num(argv[4]);
 
@@ -327,12 +334,13 @@ if(file.tail ==NULL)
 
         else
         {
-            printf("you are wrongi\n");
+            printf("you are wrong\n");
 
             FREE(&file);
 
             exit(-1);
         }
+
 
         fptr1 =fopen("config.h", "w");
 

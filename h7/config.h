@@ -1,12 +1,12 @@
 //-----------------------------------
 // FWinfo
 //-----------------------------------
-#define _OFFLINE
-#define _TOUCH_PID_LOCK
+//#define _OFFLINE
+//#define _TOUCH_PID_LOCK
 //#define _PEN_PID_LOCK
 //#define _CS_PID_LOCK
-#define BUILD_COUNT 20
-#define TASK_ID 0
+#define BUILD_COUNT 0x123
+#define TASK_ID 0x123
 #define FW_SETTING_ID 0
 #define MAX_W_SIZE 50
 #define MAX_H_SIZE 50
