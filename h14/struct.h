@@ -20,9 +20,10 @@ typedef struct THREE_ARRAY{
 
 
 
-void load_csv(void);
+THREE_ARRAY* load_csv(const char* str);
 
 int *** Malloc(unsigned int framecount, unsigned int widt ,unsigned int height);
 
+void PRINTARRAY(unsigned int num, THREE_ARRAY* file);
 
 #endif

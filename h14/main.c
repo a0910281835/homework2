@@ -4,13 +4,15 @@
 #include "struct.h"
 int main(int argc, const char * argv[])
 {
-    FILE *fptr;
 
+    /*
     char line[MAX];
 
     char *result = NULL;
 
     THREE_ARRAY file;
+
+    FILE *fptr;
 
     fptr = fopen("test.csv","r");
 
@@ -100,7 +102,7 @@ int main(int argc, const char * argv[])
             {
                 fgets(line, MAX, fptr);
 
-                printf("line:%s",line);
+//                printf("line:%s",line);
 
             } while(strcmp(line, "\n") == 0);
 
@@ -130,29 +132,16 @@ int main(int argc, const char * argv[])
 
     printf("\n");
 
-    for(i=0 ; i<file.FrameCount; i++)
+
+    }
+*/
+    THREE_ARRAY *file =  load_csv("test.csv");
+
+    if(strcmp(argv[1], "-fr") == 0)
     {
-        printf("%darray>>>>>>>>>>>>>>>>>>>>>>>:\n",i);
-
-        for(m=0; m<file.Width; m++)
-        {
-            for(n=0; n<file.Height; n++)
-            {
-                printf("%d ",file.array[i][m][n]);
-            }
-            printf("\n");
-        }
+        PRINTARRAY(atoi(argv[2]), file);
     }
-
-
-    }
-
-    else
-    {
-        printf("fail!\n");
-    }
-
-    printf("Hello\n");
+   // PRINTARRAY(0,file);
 
 
     return 0;
