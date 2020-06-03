@@ -11,12 +11,14 @@ typedef struct subnode{
 
     unsigned int value;
 
-    //left open or close right 16 or 10 
+    //left open or close right 16 or 10
     bool type;
 
     struct subnode * next;
 
     struct subnode * prev;
+
+    unsigned short int  pindex;
 
 } subnode;
 
@@ -67,11 +69,10 @@ void pushQ(tree* file, char str[MAX]);
 
 void initalitem(itemnode *tempitem);
 
+void pushnodeinleft(tree *file, char str[MAX], bool type, unsigned short int pcount);
 
-void pushnodeinleft(tree *file,char str[MAX], bool type);
 
-void pushnodeinright(tree *file,char str[MAX], bool type, unsigned int value);
-
+void pushnodeinright(tree *file, char str[MAX], bool type, unsigned int value, unsigned short int pcount);
 // show the all item or item allsubnode or item-allleftnode or item-allrightnode >>>>>>>>>>
 void printitemnode(itemnode *tempitem);
 
@@ -105,6 +106,8 @@ subnode* findsub(itemnode* tempitem, const char *str , bool direction,  bool typ
 void modification(subnode * tempsub, bool direction , const char* strval);
 
 // write the file >>>>>>>>>>>>>>>
+void fwritesub(subnode* tempsub, FILE *fptr, bool type);
+
 void fwriteitem(itemnode* tempitem, FILE *fptr);
 
 void fwritefile(tree *file, FILE *fptr);

@@ -26,4 +26,11 @@ int *** Malloc(unsigned int framecount, unsigned int widt ,unsigned int height);
 
 void PRINTARRAY(unsigned int num, THREE_ARRAY* file);
 
+THREE_ARRAY* GetR_from_D(THREE_ARRAY *file); 
+
+
+
+
+
+
 #endif

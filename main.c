@@ -39,6 +39,13 @@ int main(int argc, const char * argv[])
     int have = access("out.txt",0);
 
     printf("haveor no %d\n",~have);
+
+
+    printf(">>>>>>>>>\n");
+
+    unsigned short int k = 4;
+
+    printf("%d ",k);
     return 0;
 }
 

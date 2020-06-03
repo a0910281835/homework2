@@ -8,53 +8,6 @@
 int main(int argc, const char *argv[])
 {
 
-/*
-
-tree file;
-
-initaltree(&file);
-
-if(file.head->NEXT==file.tail)
-    printf("ya\n");
-
-pushQ(&file, "js");
-
-
-
-printf("%s\n",file.tail->PREV->I_NAME);
-
-if(file.head->NEXT!=file.tail)
-    printf("ya\n");
-pushnodeinleft(&file, "yes" ,true);
-
-printf("%s:%d:%d\n",file.tail->PREV->leftend->prev->NAME,file.tail->PREV->leftend->prev->type, file.tail->PREV->leftend->prev->value);
-
-
-pushnodeinleft(&file, "hello" ,true);
-
-printf("%s:%d:%d\n",file.tail->PREV->leftend->prev->NAME,file.tail->PREV->leftend->prev->type, file.tail->PREV->leftend->prev->value);
-
-pushnodeinright(&file, "no", false, 20);
-
-printf("%s:%d:%d\n",file.tail->PREV->rightend->prev->NAME,file.tail->PREV->rightend->prev->type, file.tail->PREV->rightend->prev->value);
-
-pushnodeinright(&file, "fuck", false, 24);
-
-printf("%s:%d:%d\n",file.tail->PREV->rightend->prev->NAME,file.tail->PREV->rightend->prev->type, file.tail->PREV->rightend->prev->value);
-printitemnode(file.tail->PREV);
-
-
-PRINTFILE(&file);
-
-//freenode(file.tail->PREV);
-FREE(&file);
-
-if(file.tail ==NULL)
-{
-    printf("succssful for left free");
-}
-*/
-
     tree file;
 
     initaltree(&file);
@@ -78,6 +31,7 @@ if(file.tail ==NULL)
 
     unsigned int value = 0;
 
+    unsigned short int pcount = 0;
     if(strcmp(argv[1], "--help") == 0)
     {
         showfunction();
@@ -189,10 +143,12 @@ if(file.tail ==NULL)
                 str[i-1] = '\0';
 
                 pushQ(&file, str+3);
+
+                pcount=1;
             }
 
             //open and close
-            if((count == 1)&&(str[2]!=' '))
+            else if((count == 1)&&(str[2]!=' '))
             {
 
           //      printf("%s", str+first);
@@ -210,11 +166,13 @@ if(file.tail ==NULL)
                     type =false;
                 }
 
-                pushnodeinleft(&file, str+first, type);
+                pushnodeinleft(&file, str+first, type, pcount);
+
+                pcount++;
 
             }
 
-            if((count == 2))
+            else if((count == 2))
             {
 //                str[endmed]='\n';
 
@@ -239,7 +197,9 @@ if(file.tail ==NULL)
 
                str[endmed] = '\0';
 
-               pushnodeinright(&file, str+first, type, value);
+               pushnodeinright(&file, str+first, type, value, pcount);
+
+               pcount++;
 
                //printf("%s %d\n", str+first, value);
 

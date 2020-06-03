@@ -216,8 +216,23 @@ THREE_ARRAY* GetR_from_D(THREE_ARRAY *file)
 {
     THREE_ARRAY * Rfile = (THREE_ARRAY*) malloc(sizeof(THREE_ARRAY));
 
-    Rfile->array = Malloc(file->FrameCount, file->Width, (file->Height+1));
+    Rfile->FrameCount = file->FrameCount;
+
+    Rfile->Width = file->Width;
+
+    Rfile->Height = file->Height+1;
 
 
+    Rfile->array = Malloc(Rfile->FrameCount, Rfile->Width, Rfile->Height);
+
+    int i, m ,n ;
+
+    i = 0;
+
+    m = 0;
+
+    n = 0;
+
+ 
 }
 

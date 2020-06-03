@@ -105,7 +105,7 @@ void initalitem(itemnode *tempitem)
 }
 
 
-void pushnodeinleft(tree *file, char str[MAX], bool type)
+void pushnodeinleft(tree *file, char str[MAX], bool type, unsigned short int pcount)
 {
 
     // avoid there has no itemnode
@@ -121,6 +121,8 @@ void pushnodeinleft(tree *file, char str[MAX], bool type)
     tempsub->type = type;
 
     tempsub->value = 0;
+
+    tempsub->pindex = pcount;
 
     // execute the pushleft; and we insert the last itemnode
     subnode* last = file->tail->PREV->leftend;
@@ -138,7 +140,7 @@ void pushnodeinleft(tree *file, char str[MAX], bool type)
     tempsub = NULL;
 }
 
-void pushnodeinright(tree *file, char str[MAX], bool type, unsigned int value)
+void pushnodeinright(tree *file, char str[MAX], bool type, unsigned int value, unsigned short int pcount)
 {
 
     if(file->head->NEXT == file->tail)
@@ -153,6 +155,9 @@ void pushnodeinright(tree *file, char str[MAX], bool type, unsigned int value)
     tempsub->type = type;
 
     tempsub->value = value;
+
+    tempsub->pindex = pcount;
+
     // execute the pushrightt;
     subnode* last = file->tail->PREV->rightend;
 
@@ -181,7 +186,7 @@ void printitemnode(itemnode *tempitem)
     // in future ,you can change the loop by leftnumber
    while(tempsub !=tempitem->leftend)
    {
-       printf("->[%d]%s %d\n",count++, tempsub->NAME, tempsub->value);
+       printf("->[%d]%s %d and order:%d\n",count++, tempsub->NAME, tempsub->value, tempsub->pindex);
 
        tempsub = tempsub->next;
    }
@@ -196,12 +201,12 @@ void printitemnode(itemnode *tempitem)
    {
        if(tempsub->type == true)
        {
-            printf("=>[%d]%s 0x%04x\n",count++, tempsub->NAME, tempsub->value);
+            printf("=>[%d]%s 0x%04x and order:%d\n",count++, tempsub->NAME, tempsub->value, tempsub->pindex);
        }
 
        else
        {
-            printf("=>[%d]%s %d\n",count++, tempsub->NAME, tempsub->value);
+            printf("=>[%d]%s %d and order:%d\n",count++, tempsub->NAME, tempsub->value,tempsub->pindex);
         }
 
       tempsub = tempsub->next;
@@ -224,7 +229,7 @@ void printitemnodeleft(itemnode *tempitem)
     // in future ,you can change the loop by leftnumber
     while(tempsub !=tempitem->leftend)
     {
-        printf("->[%d]%s %d\n",count++, tempsub->NAME, tempsub->value);
+        printf("->[%d]%s %d and order:%d\n",count++, tempsub->NAME, tempsub->value,tempsub->pindex);
 
         tempsub = tempsub->next;
     }
@@ -250,12 +255,12 @@ void printitemnoderight(itemnode *tempitem)
    {
        if(tempsub->type == true)
        {
-            printf("=>[%d]%s 0x%04x\n",count++, tempsub->NAME, tempsub->value);
+            printf("=>[%d]%s 0x%04x and order:%d\n",count++, tempsub->NAME, tempsub->value, tempsub->pindex);
        }
 
        else
        {
-            printf("=>[%d]%s %d\n",count++, tempsub->NAME, tempsub->value);
+            printf("=>[%d]%s %d and order:%d\n",count++, tempsub->NAME, tempsub->value, tempsub->pindex);
         }
 
       tempsub = tempsub->next;
@@ -612,37 +617,16 @@ void modification(subnode * tempsub, bool direction , const char* strval)
 }
 
 
-
-
-void fwriteitem(itemnode* tempitem, FILE *fptr)
+void fwritesub(subnode* tempsub, FILE *fptr, bool type)
 {
     char str[MAX];
 
     char str1[20];
 
-    strcpy(str, "//-----------------------------------\n");
-
-
-    fwrite(str, sizeof(char), strlen(str), fptr);
-
-    strcpy(str,  "// ");
-
-    strcat(str, tempitem->I_NAME);
-
-    strcat(str,"\n");
-
-    fwrite(str,sizeof(char), strlen(str), fptr);
-
-    strcpy(str, "//-----------------------------------\n");
-
-    fwrite(str, sizeof(char), strlen(str), fptr);
-
-    // following below is write left then write right.
-    subnode *tempsub = tempitem->leftstart->next;
-
-    while(tempsub != tempitem->leftend)
+    //leftnode
+    if(type == true)
     {
-        //switch is open
+
         if(tempsub->type == true)
         {
             strcpy(str,"#define ");
@@ -668,15 +652,12 @@ void fwriteitem(itemnode* tempitem, FILE *fptr)
 
         }
 
-        tempsub = tempsub->next;
     }
 
-
-    //parameter write
-    tempsub = tempitem->rightstart->next;
-
-    while(tempsub != tempitem->rightend)
+    // rightnode
+    else
     {
+
        if(tempsub->type == true)
        {
             strcpy(str,"#define ");
@@ -711,13 +692,77 @@ void fwriteitem(itemnode* tempitem, FILE *fptr)
             fwrite(str, sizeof(char), strlen(str), fptr);
 
        }
+    }
+
+}
 
 
-      tempsub = tempsub->next;
+
+void fwriteitem(itemnode* tempitem, FILE *fptr)
+{
+    char str[MAX];
+
+ //   char str1[20];
+
+    strcpy(str, "//-----------------------------------\n");
+
+
+    fwrite(str, sizeof(char), strlen(str), fptr);
+
+    strcpy(str,  "// ");
+
+    strcat(str, tempitem->I_NAME);
+
+    strcat(str,"\n");
+
+    fwrite(str,sizeof(char), strlen(str), fptr);
+
+    strcpy(str, "//-----------------------------------\n");
+
+    fwrite(str, sizeof(char), strlen(str), fptr);
+
+    // following below is write left then write right.
+    subnode *tempsubleft = tempitem->leftstart->next;
+
+    subnode *tempsubright = tempitem->rightstart->next;
+
+    while((tempsubleft != tempitem->leftend)&&(tempsubright !=tempitem->rightend))
+    {
+        //switch is open
+        if((tempsubleft->pindex) < (tempsubright->pindex))
+        {
+            fwritesub(tempsubleft, fptr, true);
+
+            tempsubleft = tempsubleft->next;
+        }
+
+        else
+        {
+            fwritesub(tempsubright, fptr, false);
+
+            tempsubright = tempsubright->next;
+        }
 
     }
 
-    tempsub = NULL;
+
+    while(tempsubleft != tempitem->leftend)
+    {
+            fwritesub(tempsubleft, fptr, true);
+
+            tempsubleft = tempsubleft->next;
+    }
+
+    while(tempsubright != tempitem->rightend)
+    {
+            fwritesub(tempsubright, fptr, true);
+
+            tempsubright = tempsubright->next;
+    }
+
+    tempsubleft = NULL;
+
+    tempsubright = NULL;
 }
 
 
