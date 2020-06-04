@@ -1,10 +1,9 @@
-#include "struct.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-
-int *** Malloc(unsigned int framecount, unsigned int widt ,unsigned int height)
+#include "struct.h"
+int *** Malloc(int framecount, int widt, int height)
 {
     int i,m,n;
 
@@ -200,7 +199,7 @@ void PRINTARRAY(unsigned int num, THREE_ARRAY* file)
     {
         for(n=0; n<file->Height; n++)
         {
-            printf("%d ",file->array[num][m][n]);
+            printf("%4d",file->array[num-1][m][n]);
         }
         printf("\n");
     }
@@ -220,7 +219,7 @@ THREE_ARRAY* GetR_from_D(THREE_ARRAY *file)
 
     Rfile->Width = file->Width;
 
-    Rfile->Height = file->Height+1;
+    Rfile->Height = (file->Height+1);
 
 
     Rfile->array = Malloc(Rfile->FrameCount, Rfile->Width, Rfile->Height);
@@ -233,6 +232,193 @@ THREE_ARRAY* GetR_from_D(THREE_ARRAY *file)
 
     n = 0;
 
- 
+    int temp = 0;
+
+    int row = 0;
+
+    for(i=0; i<Rfile->FrameCount; i++)
+    {
+        for(m=0; m<Rfile->Width; m++)
+        {
+            for(n=0; n<Rfile->Height; n++)
+            {
+                if(n==0)
+                {
+                    temp = 0;
+
+                    Rfile->array[i][m][n] = temp;
+
+                    row = temp;
+                }
+
+                else
+                {
+                    Rfile->array[i][m][n] = temp - file->array[i][m][n-1];
+
+                    temp = Rfile->array[i][m][n];
+
+                    row = row + temp;
+                }
+            }
+            // mean
+            row = row / (Rfile->Height);
+
+            for(n=0; n<Rfile->Height; n++)
+            {
+                Rfile->array[i][m][n] = Rfile->array[i][m][n] - row;
+            }
+        
+        }
+    } 
+
+
+    return Rfile;
 }
 
+
+bool EQUALCOORD( const COORDINATE coord1, const COORDINATE coord2)
+{
+    bool type = true;
+
+    if((coord1.RX != coord2.RX)||(coord1.TX !=coord2.TX))
+    {
+        type = false;
+    }
+
+    return type;
+}
+
+
+
+
+COORDINATE Findnextcoord(int **array, int width, int height, COORDINATE coord, int COMP )
+{
+    int m, n ;
+
+    //remove the edge of array row=0 to width-1 and column 0 to height-1
+
+    COORDINATE nextcoord = {1, 0};
+
+    m = coord.TX;
+// remain coloum for this row
+    for(n=coord.RX+1; n<height-1;n++)
+    {
+       if(array[m][n]>COMP)
+       {
+            if(array[m][n] <= array[m-1][n-1])
+                continue;
+            if(array[m][n] <= array[m][n-1])
+                continue;
+            if(array[m][n] <= array[m+1][n-1])
+                continue;
+            if(array[m][n] <= array[m-1][n])
+                continue;
+            if(array[m][n] < array[m+1][n])
+                continue;
+            if(array[m][n] < array[m-1][n+1])
+                continue;
+            if(array[m][n] < array[m][n+1])
+                continue;
+            if(array[m][n] < array[m+1][n+1])
+                continue;
+            
+            nextcoord.TX = m;
+
+            nextcoord.RX = n;
+
+            return nextcoord;
+       }
+    }
+// remain all row
+   for(m=coord.TX+1; m<width-1; m++)
+   {
+
+           for(n=1; n<height-1;n++)
+           {
+               if(array[m][n]>COMP)
+               {
+                    if(array[m][n] <= array[m-1][n-1])
+                        continue;
+                    if(array[m][n] <= array[m][n-1])
+                        continue;
+                    if(array[m][n] <= array[m+1][n-1])
+                        continue;
+                    if(array[m][n] <= array[m-1][n])
+                        continue;
+                    if(array[m][n] < array[m+1][n])
+                        continue;
+                    if(array[m][n] < array[m-1][n+1])
+                        continue;
+                    if(array[m][n] < array[m][n+1])
+                        continue;
+                    if(array[m][n] < array[m+1][n+1])
+                        continue;
+                    
+                    nextcoord.TX = m;
+
+                    nextcoord.RX = n;
+
+                    return nextcoord;
+               }
+           }
+   }
+
+
+   return nextcoord;
+}
+
+
+void PRINTTHREE(int **array, COORDINATE coord)
+{
+    int m , n;
+
+    printf("coordinate:[%d, %d] \n",coord.TX, coord.RX);
+
+    for(m=coord.TX-1;m<coord.TX+2;m++)
+    {
+        for(n=coord.RX-1;n<coord.RX+2;n++)
+        {
+            printf("%4d ", array[m][n]);
+        }
+        
+        printf("\n");
+    }
+    
+}
+
+
+void FindMatrix(int **array, int width, int height, int COMP)
+{
+    const COORDINATE fixcoord = {1, 0};
+
+    COORDINATE nextcoord = {1, 0};
+
+    while(1) 
+    {
+       nextcoord = Findnextcoord(array, width, height, nextcoord, COMP); 
+    
+       if(EQUALCOORD(nextcoord, fixcoord) == true)
+       {
+            break;
+       }
+
+       PRINTTHREE(array, nextcoord);
+
+       printf("\n");
+    }
+}
+
+void FindTHREE_ARRAY(THREE_ARRAY* file, int COMP)
+{
+   int i = 0;
+
+  for(i=0; i<file->FrameCount; i++)
+  {
+      printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+
+      printf("the %d Frame\n",i);
+
+      FindMatrix(file->array[i], file->Width, file->Height, COMP);
+  } 
+
+}

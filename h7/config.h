@@ -136,8 +136,8 @@
 // MutDetect
 //-----------------------------------
 #define MAX_TOUCH_NUM 10
-#define MUT_THRESHOLD 200
-#define MUT_WEIGHT_THRESHOLD 400
+#define MUT_THRESHOLD 35
+#define MUT_WEIGHT_THRESHOLD 150
 //#define _MUT_FIRST_POINT
 #define MUT_FIRST_THRESHOLD 300
 #define MUT_FIRST_WEIGHT_THRESHOLD 400

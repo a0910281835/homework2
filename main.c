@@ -13,6 +13,13 @@ void string(const char *str)
 int main(int argc, const char * argv[])
 {
 
+    typedef struct COOR{
+
+        int x;
+
+        int y;
+    } COOR;
+
     char ch[20] = "015";
 
     char str[20];
@@ -43,9 +50,50 @@ int main(int argc, const char * argv[])
 
     printf(">>>>>>>>>\n");
 
-    unsigned short int k = 4;
 
-    printf("%d ",k);
+
+ unsigned int k=3;
+    printf("%d\n",-10/k);
+
+
+
+    k=(3>2);
+
+    value =(4>5);
+
+    printf("%d",(4>5));
+    if(k&value)
+    {
+        printf("and");
+
+    }
+
+    if(k|value)
+    {
+        printf("or");
+    }
+
+
+ int i;
+    for(i=0;i<5;i++)
+    {
+        if(i==2)
+            continue;
+        printf("%d\n",i);
+    }
+
+    COOR coor = {2,3};
+
+    COOR coor1 ={2,4};
+
+    if(coor == coor1)
+    {
+        printf("that are equal!\n");
+    }
+
+
+
+
     return 0;
 }
 

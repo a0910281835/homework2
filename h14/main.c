@@ -1,7 +1,9 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "struct.h"
+#include "/home/sis/Desktop/homework2/h7/config.h"
 int main(int argc, const char * argv[])
 {
 
@@ -137,12 +139,32 @@ int main(int argc, const char * argv[])
 */
     THREE_ARRAY *file =  load_csv("test.csv");
 
-    if(strcmp(argv[1], "-fr") == 0)
-    {
-        PRINTARRAY(atoi(argv[2]), file);
-    }
-   // PRINTARRAY(0,file);
+    THREE_ARRAY *Rfile = GetR_from_D(file);
 
+    if(argv[1] != NULL)
+    {
+
+        if(strcmp(argv[1], "-fr") == 0)
+        {
+            PRINTARRAY(atoi(argv[2]), file);
+
+            return 0;
+        }
+
+
+        if(strcmp(argv[1], "-fd") == 0)
+        {
+            PRINTARRAY(atoi(argv[2]), Rfile);
+
+            return 0;
+        }
+
+    }
+
+
+    //FindMatrix(Rfile->array[6], Rfile->Width, Rfile->Height, MUT_THRESHOLD);
+
+    FindTHREE_ARRAY(Rfile, MUT_THRESHOLD);
 
     return 0;
 }
