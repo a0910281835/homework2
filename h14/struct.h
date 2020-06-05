@@ -6,11 +6,11 @@ typedef struct THREE_ARRAY{
 
     char  File_NAME[MAX];
 
-     int FrameCount;
+    int FrameCount;
 
-     int Width;
+    int Width;
 
-     int Height;
+    int Height;
 
     char type[MAX];
 
@@ -57,5 +57,9 @@ void FindMatrix(int **array, int width, int height, int COMP);
 
 //find all frame's matrix
 void FindTHREE_ARRAY(THREE_ARRAY* file, int COMP);
+
+static void freearray(int ***array, int framecount, int width);
+
+void FREE(THREE_ARRAY *file);
 
 #endif

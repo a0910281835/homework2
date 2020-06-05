@@ -148,6 +148,10 @@ int main(int argc, const char * argv[])
         {
             PRINTARRAY(atoi(argv[2]), file);
 
+            FREE(file);
+
+            FREE(Rfile);
+
             return 0;
         }
 
@@ -156,15 +160,21 @@ int main(int argc, const char * argv[])
         {
             PRINTARRAY(atoi(argv[2]), Rfile);
 
+            FREE(file);
+
+            FREE(Rfile);
+
             return 0;
         }
 
     }
 
 
-    //FindMatrix(Rfile->array[6], Rfile->Width, Rfile->Height, MUT_THRESHOLD);
-
     FindTHREE_ARRAY(Rfile, MUT_THRESHOLD);
+
+    FREE(file);
+
+    FREE(Rfile);
 
     return 0;
 }

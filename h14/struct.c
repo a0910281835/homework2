@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "struct.h"
+
 int *** Malloc(int framecount, int widt, int height)
 {
     int i,m,n;
@@ -193,6 +194,13 @@ void PRINTARRAY(unsigned int num, THREE_ARRAY* file)
 
     n = 0;
 
+    if(num >file->FrameCount)
+    {
+        printf("error");
+
+        exit(-1);
+    }
+
     printf("%d array>>>>>>>>>>>>>>>>>>>>>>>:\n",num);
 
     for(m=0; m<file->Width; m++)
@@ -295,6 +303,7 @@ COORDINATE Findnextcoord(int **array, int width, int height, COORDINATE coord, i
 {
     int m, n ;
 
+    int weight = 0;
     //remove the edge of array row=0 to width-1 and column 0 to height-1
 
     COORDINATE nextcoord = {1, 0};
@@ -421,4 +430,39 @@ void FindTHREE_ARRAY(THREE_ARRAY* file, int COMP)
       FindMatrix(file->array[i], file->Width, file->Height, COMP);
   } 
 
+}
+
+
+static void freearray(int ***array, int framecount, int width)
+{
+    int i , m;
+
+    for(i=0; i<framecount; i++)
+    {
+        for(m=0; m<width; m++)
+        {
+            free(array[i][m]);
+        }
+    }
+
+
+    for(i=0; i<framecount; i++)
+    {
+        free(array[i]);
+    }
+
+
+    free(array);
+
+    array = NULL;
+}
+
+
+void FREE(THREE_ARRAY *file)
+{
+    freearray(file->array, file->FrameCount, file->Width);
+
+    free(file);
+
+    file = NULL;
 }

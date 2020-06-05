@@ -8,8 +8,7 @@
 int main(int argc, const char *argv[])
 {
 
-    tree file;
-
+/*
     initaltree(&file);
 
     FILE *fptr;
@@ -213,17 +212,29 @@ int main(int argc, const char *argv[])
 
         fclose(fptr);
 
+*/
 
-        itemnode* tempitem = NULL;
 
-        subnode* tempsub = NULL;
+    tree *file;
+
+    file = Load_H(argv[1]);
+
+    Chosen(file, argv[1], argv[2], argv[3], argv[4], argv[5]); 
+/*
+    itemnode* tempitem = NULL;
+
+    subnode* tempsub = NULL;
 
 
     if(argv[2] == NULL)
     {
         printf("the parameter is not enough\n");
 
-        FREE(&file);
+        FREE(file);
+
+        free(file);
+
+        file = NULL;
 
         exit(-1);
     }
@@ -237,7 +248,7 @@ int main(int argc, const char *argv[])
     bool first_check = analysis_word_num(argv[2]);
 
                                         //true change first_check
-    tempitem =  finditem(&file, argv[2], first_check);
+    tempitem =  finditem(file, argv[2], first_check);
 
 
     if(strcmp(argv[1], "-i") == 0)
@@ -261,7 +272,7 @@ int main(int argc, const char *argv[])
         {
             printf("input is wrong\n");
 
-            FREE(&file);
+            FREE(file);
 
             exit(-1);
         }
@@ -273,11 +284,17 @@ int main(int argc, const char *argv[])
         {
             printf("wrong!");
 
+            FREE(file);
+
+            free(file);
+
+            file = NULL;
+
             exit(-1);
         }
 
         // check the second_term
-        bool second_check =analysis_word_num(argv[4]);
+        bool second_check = analysis_word_num(argv[4]);
 
         bool direction;
 
@@ -296,34 +313,39 @@ int main(int argc, const char *argv[])
         {
             printf("you are wrong\n");
 
-            FREE(&file);
+            FREE(file);
+
+            free(file);
+
+            file = NULL;
 
             exit(-1);
         }
 
 
-        fptr1 =fopen("config.h", "w");
+       FILE* fptr =fopen("config.h", "w");
 
         tempsub = findsub(tempitem, argv[4], direction, second_check);
 
         modification(tempsub, direction , argv[5]);
 
-        fwritefile(&file,fptr1);
+        fwritefile(file,fptr);
 
-        fclose(fptr1);
+        fclose(fptr);
+
+        fptr = NULL;
     }
 
 
 
-        FREE(&file);
+        FREE(file);
+
+        free(file);
+
+        file = NULL;
 
 
-    }
-
-    else
-    {
-        printf("error\n");
-    }
+*/
 
 
     return 0;

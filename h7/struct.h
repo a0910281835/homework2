@@ -66,11 +66,9 @@ void initaltree(tree * file);
 
 void pushQ(tree* file, char str[MAX]);
 
-
 void initalitem(itemnode *tempitem);
 
 void pushnodeinleft(tree *file, char str[MAX], bool type, unsigned short int pcount);
-
 
 void pushnodeinright(tree *file, char str[MAX], bool type, unsigned int value, unsigned short int pcount);
 // show the all item or item allsubnode or item-allleftnode or item-allrightnode >>>>>>>>>>
@@ -112,4 +110,7 @@ void fwriteitem(itemnode* tempitem, FILE *fptr);
 
 void fwritefile(tree *file, FILE *fptr);
 
+tree *Load_H(const char *ar);
+
+void Chosen(tree *file, const char *ar1, const char *ar2, const char *ar3, const char *ar4, const char *ar5);
 #endif

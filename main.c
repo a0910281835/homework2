@@ -86,14 +86,27 @@ int main(int argc, const char * argv[])
 
     COOR coor1 ={2,4};
 
-    if(coor == coor1)
-    {
-        printf("that are equal!\n");
-    }
 
+    if(strcmp(argv[1], "-i") == 0)
+    {
+        printf("haha!");
+    }
 
 
 
     return 0;
 }
 
+void fun(void)
+{
+    if(strcmp(argv[1], "-i") == 0)
+    {
+        printf("haha!");
+    }
+
+    else
+    {
+        printf("no!");
+    }
+
+}
